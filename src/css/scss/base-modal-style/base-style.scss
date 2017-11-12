@@ -1,0 +1,89 @@
+$bg-color: #000;
+$bg-opacity: .7;
+$transition-timing: .2s;
+$close-btn-symbol-color: #fff;
+$close-btn-symbol-hover-color: #f00;
+$close-btn-bg-color: #fff; // uncomment in .close-btn section
+
+.popup-modal__wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  transition: width $transition-timing, height $transition-timing;
+  transform: translateX(-50%) translateY(-50%);
+  background: rgba($bg-color, $bg-opacity);
+  z-index: -10;
+}
+
+.popup-modal-active {
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+}
+
+.popup-modal {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+
+.content-holder__wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.content-holder {
+  position: relative;
+}
+
+.popup-modal__close-btn--holder {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.popup-modal__close-btn {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  transform: rotate(45deg);
+  cursor: pointer;
+  // background: $close-btn-bg-color;
+
+  &:hover {
+    &:before,
+    &:after {
+      background: $close-btn-symbol-hover-color;
+    }
+  }
+
+  &:before {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    height: 70%;
+    width: 4px;
+    background: $close-btn-symbol-color;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  &:after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 50%;
+    height: 4px;
+    width: 70%;
+    background: $close-btn-symbol-color;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}

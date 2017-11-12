@@ -6,35 +6,55 @@
   */
 
   app.popupModal = (function () {
+    // modal options
+    var defaultOptions = {
+      activateScrollLock: true,
+      popupModalClass: 'popup-modal',
+      popupContentClass: 'content-holder',
+      activeClass: 'popup-modal-active',
+      closeBtnClass: 'popup-modal__close-btn',
+      closeBtnHolderClass: 'popup-modal__close-btn--holder'
+    };
+    var modalOptions = {};
+
+    // current modal state variables
     var isModalCreated = false;
+    var scrollLockActivated = false;
 
     // base modal content
     var popupModalWrapper;
     var popupModal;
-    var popupModalClass = 'popup-modal';
     var popupContentHolderWrapper;
     var popupContentHolder;
-    var popupContentClass = 'content-holder';
 
-    var createModal = function () {
+    /**
+    * @param options object -- optional object containg default option
+    * overrides to be passed the the extendOptions() function
+    */
+    var createModal = function (options) {
+      // update default modal options with custom options if any
+      extendOptions(options);
+
       if (isModalCreated === false) {
         // create modal element and assign it wrapper class
         popupModalWrapper = document.createElement('div');
-        popupModalWrapper.classList.add(popupModalClass + '__wrapper');
+        popupModalWrapper.classList.add(modalOptions.popupModalClass + '__wrapper');
         popupModal = document.createElement('div');
-        popupModal.classList.add(popupModalClass);
+        popupModal.classList.add(modalOptions.popupModalClass);
         popupModalWrapper.append(popupModal);
 
         // create popup modal content holder
         popupContentHolderWrapper = document.createElement('div');
-        popupContentHolderWrapper.classList.add(popupContentClass + '__wrapper');
+        popupContentHolderWrapper.classList.add(modalOptions.popupContentClass + '__wrapper');
         popupContentHolder = document.createElement('div');
-        popupContentHolder.classList.add(popupContentClass);
+        popupContentHolder.classList.add(modalOptions.popupContentClass);
         popupContentHolderWrapper.append(popupContentHolder);
 
         // apend content holder to modal
         popupModal.append(popupContentHolderWrapper);
 
+        // add close button
+        addCloseBtn();
         // append modal to body
         document.querySelector('body').append(popupModalWrapper);
 
@@ -42,6 +62,51 @@
         isModalCreated = true;
       }
     };
+
+    var addCloseBtn = function () {
+      var closeDiv = document.createElement('div');
+      closeDiv.classList.add(modalOptions.closeBtnClass);
+      var closeBtnHolderClass = modalOptions.closeBtnHolderClass;
+
+      // check if the content holder has a defined close btn container,
+      // if not, add one, then load in the close btn
+      if (popupContentHolder && popupContentHolder.classList.contains(closeBtnHolderClass)) {
+        popupContentHolder.querySelector(closeBtnHolderClass).append(closeDiv);
+      } else {
+        var closeBtnHolderDiv = document.createElement('div');
+        closeBtnHolderDiv.classList.add(closeBtnHolderClass);
+        closeBtnHolderDiv.append(closeDiv);
+        popupContentHolder.append(closeBtnHolderDiv);
+      }
+    };
+
+    var destroyModal = function () {
+      modalOptions = {};
+      isModalCreated = false;
+      popupModalWrapper.remove();
+    };
+
+    /**
+    * @param options object -- optional object containg default option
+    * overrides to be merged into modalOptions along with defaultOptions
+    * functon called by createModal()
+    */
+    function extendOptions (options) {
+      var key;
+      for (key in defaultOptions) {
+        if (defaultOptions.hasOwnProperty(key)) {
+          modalOptions[key] = defaultOptions[key];
+        }
+      }
+
+      if (options) {
+        for (key in options) {
+          if (options.hasOwnProperty(key)) {
+            modalOptions[key] = options[key];
+          }
+        }
+      }
+    }
 
     /**
     * @param targetClass string -- class identifier for targeting
@@ -53,25 +118,50 @@
       var copyTarget = targetObj.cloneNode(true);
       popupContentHolder.innerHTML = '';
       popupContentHolder.appendChild(copyTarget);
+      addCloseBtn();
     };
 
     var activateModal = function () {
-      // ...
+      popupModalWrapper.classList.add(modalOptions.activeClass);
+      lockScroll();
     };
 
     var closeModal = function () {
-      // ...
+      popupModalWrapper.classList.remove(modalOptions.activeClass);
+      popupContentHolder.innerHTML = '';
+      unlockScroll();
     };
 
-    var scrollLock = function () {
-      // ...
+    var lockScroll = function () {
+      if (modalOptions.activateScrollLock) {
+        document.querySelector('body').style.overflow = 'hidden';
+        var scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName('html')[0].scrollTop;
+        document.addEventListener('scroll', scrollToOverride(scrollPos));
+        scrollLockActivated = true;
+      }
+    };
+
+    /**
+    * @param scrollPos float -- current scroll position to be used to prevent
+    * scolling when the modal is poped up
+    */
+    var scrollToOverride = function (scrollPos) {
+      window.scrollTo(0, scrollPos);
+    };
+
+    var unlockScroll = function () {
+      if (scrollLockActivated) {
+        document.querySelector('body').style.overflow = 'auto';
+        document.removeEventListener('scroll', scrollToOverride);
+      }
     };
 
     return {
       createModal: createModal,
       fillModal: fillModal,
       activateModal: activateModal,
-      closeModal: closeModal
+      closeModal: closeModal,
+      destroyModal: destroyModal
     };
   })();
 })(window.app = window.app || {}, window, document);
