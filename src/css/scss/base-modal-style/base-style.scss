@@ -1,7 +1,7 @@
 $bg-color: #000;
 $bg-opacity: .7;
 $transition-timing: .2s;
-$close-btn-symbol-color: #fff;
+$close-btn-symbol-color: #555;
 $close-btn-symbol-hover-color: #f00;
 $close-btn-bg-color: #fff; // uncomment in .close-btn section
 
@@ -42,7 +42,7 @@ $close-btn-bg-color: #fff; // uncomment in .close-btn section
   position: relative;
 }
 
-.popup-modal__close-btn--holder {
+.popup-modal__close-btn__wrapper {
   position: absolute;
   top: 0;
   right: 0;

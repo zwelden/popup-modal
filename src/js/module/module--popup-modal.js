@@ -12,8 +12,7 @@
       popupModalClass: 'popup-modal',
       popupContentClass: 'content-holder',
       activeClass: 'popup-modal-active',
-      closeBtnClass: 'popup-modal__close-btn',
-      closeBtnHolderClass: 'popup-modal__close-btn--holder'
+      closeBtnClass: 'popup-modal__close-btn'
     };
     var modalOptions = {};
 
@@ -55,6 +54,9 @@
 
         // add close button
         addCloseBtn();
+
+        // add event listeners
+        createEventListeners();
         // append modal to body
         document.querySelector('body').append(popupModalWrapper);
 
@@ -66,7 +68,7 @@
     var addCloseBtn = function () {
       var closeDiv = document.createElement('div');
       closeDiv.classList.add(modalOptions.closeBtnClass);
-      var closeBtnHolderClass = modalOptions.closeBtnHolderClass;
+      var closeBtnHolderClass = modalOptions.closeBtnClass + '__wrapper';
 
       // check if the content holder has a defined close btn container,
       // if not, add one, then load in the close btn
@@ -132,6 +134,9 @@
       unlockScroll();
     };
 
+    // if activateScrollLock is set to true, the modal will lock the scroll
+    // position of the screen on while the modal is active.
+    // once closed unlockScroll() will be called to reactivate scrolling
     var lockScroll = function () {
       if (modalOptions.activateScrollLock) {
         document.querySelector('body').style.overflow = 'hidden';
@@ -153,7 +158,16 @@
       if (scrollLockActivated) {
         document.querySelector('body').style.overflow = 'auto';
         document.removeEventListener('scroll', scrollToOverride);
+        scrollLockActivated = false;
       }
+    };
+
+    var createEventListeners = function () {
+      document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains(modalOptions.closeBtnClass)) {
+          closeModal();
+        }
+      });
     };
 
     return {

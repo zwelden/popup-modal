@@ -1,0 +1,21 @@
+$main-message-bg-color: #fff;
+$main-message-txt-color: #333;
+
+.main-message {
+    width: 50vw;
+    min-width: 300px;
+    height: 50vh;
+    min-height: 400px;
+    background: $main-message-bg-color;
+    color: $main-message-txt-color;
+    padding: 20px;
+
+    h2 {
+      padding: 2em 0;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+    }
+}

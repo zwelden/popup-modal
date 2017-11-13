@@ -6,11 +6,28 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <h1>A Reusable Popup Modal</h1>
+    <div class="title">
+      <h1>A Reusable Popup Modal</h1>
+    </div>
+    <div class="main-content">
+      <section>
+        <p class="doc-text">
+          This is a reusable popup modal. It works by injecting a modal into the
+          document tree, filling the modal with any desired content, then launching
+          the model when activated. Give it a try here:
+        </p>
+        <div class="modal-launcher-btn">
+          <button type="button" name="button" class="js-main-modal" data-target="main-message">Click Me</button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- popup content -->
     <div class="hidden-content" style="display:none">
-      <div class="test-content">
-        <h2>Stuff</h2>
-        <p>lorem ipsum</p>
+      <div class="main-message">
+        <h2>An Awesome Popup!</h2>
+        <p>Thanks for clinking that button</p>
       </div>
     </div>
 

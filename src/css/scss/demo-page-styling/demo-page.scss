@@ -1,0 +1,60 @@
+// colors
+$dark: #1f1209;
+$blue: #003366;
+$eggshell: #fff8dc;
+$brown: #834c24;
+$doc-transition-speed: .3s;
+
+// content width
+$max-width: 1200px;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  color: $dark;
+}
+
+.title {
+  background: $blue;
+  padding: 2em;
+  color: $eggshell;
+  text-align: center;
+}
+
+.main-content {
+  width: 85%;
+  max-width: $max-width;
+  margin: auto;
+}
+
+section {
+  border-bottom: 1px solid $brown;
+}
+
+.doc-text {
+  font-size: 1.1em;
+  line-height: 1.5em;
+}
+
+button {
+  background: transparent;
+  padding: 10px 20px;
+  font-size: 1em;
+  border: 2px solid $blue;
+  margin: 1em 0;
+  color: $blue;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background $doc-transition-speed, color $doc-transition-speed;
+  cursor: pointer;
+
+  &:hover {
+    background: $blue;
+    color: $eggshell;
+  }
+}
+
+.modal-launcher-btn {
+  text-align: center;
+}

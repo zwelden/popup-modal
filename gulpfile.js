@@ -18,7 +18,7 @@ gulp.task('browserSync', function () {
 });
 
 gulp.task('js', function () {
-  return gulp.src(source + 'js/**/*.js')
+  return gulp.src([source + 'js/module/**/*.js', source + 'js/extras/**/*.js'])
     .pipe(concat('main.js'))
     // .pipe(uglify())
     .pipe(gulp.dest(build + 'js'));
@@ -51,7 +51,7 @@ gulp.task('sass-watch', ['sass'], function (done) {
     stream: true
   });
   done();
-})
+});
 
 gulp.task('watch', ['browserSync', 'sass', 'html', 'js'], function () {
   gulp.watch(source + 'css/scss/**/*.scss', ['sass-watch']);
