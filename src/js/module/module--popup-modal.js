@@ -12,7 +12,8 @@
       popupModalClass: 'popup-modal',
       popupContentClass: 'content-holder',
       activeClass: 'popup-modal-active',
-      closeBtnClass: 'popup-modal__close-btn'
+      closeBtnClass: 'popup-modal__close-btn',
+      destoryOnClose: false
     };
     var modalOptions = {};
 
@@ -132,6 +133,11 @@
       popupModalWrapper.classList.remove(modalOptions.activeClass);
       popupContentHolder.innerHTML = '';
       unlockScroll();
+      if (modalOptions.destroyOnClose) {
+        setTimeout({function () {
+          destroyModal();
+        }}, 0);
+      }
     };
 
     // if activateScrollLock is set to true, the modal will lock the scroll

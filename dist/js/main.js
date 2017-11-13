@@ -12,7 +12,8 @@
       popupModalClass: 'popup-modal',
       popupContentClass: 'content-holder',
       activeClass: 'popup-modal-active',
-      closeBtnClass: 'popup-modal__close-btn'
+      closeBtnClass: 'popup-modal__close-btn',
+      destoryOnClose: false
     };
     var modalOptions = {};
 
@@ -132,6 +133,11 @@
       popupModalWrapper.classList.remove(modalOptions.activeClass);
       popupContentHolder.innerHTML = '';
       unlockScroll();
+      if (modalOptions.destroyOnClose) {
+        setTimeout({function () {
+          destroyModal();
+        }}, 0);
+      }
     };
 
     // if activateScrollLock is set to true, the modal will lock the scroll
@@ -181,15 +187,15 @@
 })(window.app = window.app || {}, window, document);
 
 (function (app, window, document) {
-  if (document.querySelector('.js-main-modal')) {
-    app.popupModal.createModal();
-  }
-
   document.addEventListener('click', function (e) {
     if (e.target && e.target.classList.contains('js-main-modal')) {
       var content = e.target.dataset.target;
+
+      app.popupModal.createModal({destroyOnClose: true});
       app.popupModal.fillModal(content);
-      app.popupModal.activateModal();
+      setTimeout(function () {
+        app.popupModal.activateModal();
+      }, 0);
     }
   });
 })(window.app = window.app || {}, window, document);
