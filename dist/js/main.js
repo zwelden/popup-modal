@@ -1,3 +1,4 @@
+/* global Event */
 (function (app, window, document) {
   /*
   *
@@ -127,12 +128,15 @@
     var activateModal = function () {
       popupModalWrapper.classList.add(modalOptions.activeClass);
       lockScroll();
+      addEscape();
     };
 
     var closeModal = function () {
       popupModalWrapper.classList.remove(modalOptions.activeClass);
       popupContentHolder.innerHTML = '';
       unlockScroll();
+      removeEscape();
+
       if (modalOptions.destroyOnClose) {
         setTimeout({function () {
           destroyModal();
@@ -175,6 +179,21 @@
         }
       });
     };
+    function addEscape () {
+      document.addEventListener('keyup', triggerCloseOnEsc);
+    }
+
+    function removeEscape () {
+      document.removeEventListener('keyup', triggerCloseOnEsc);
+    }
+
+    function triggerCloseOnEsc (e) {
+      if (e.keyCode === 27) {
+        var clickEvent = new Event('click');
+        var closeBtn = popupModalWrapper.querySelectory('.' + modalOptions.closeBtnClass);
+        closeBtn.dispatchEvent(clickEvent);
+      }
+    }
 
     return {
       createModal: createModal,
